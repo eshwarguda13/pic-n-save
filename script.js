@@ -1,74 +1,92 @@
-// Upload Image to Backend
-async function uploadImage(){
+// Upload Image
+async function uploadImage() {
 
   const input = document.getElementById("fileInput");
   const file = input.files[0];
 
-  if(!file){
-    alert("Select a file first");
+  if (!file) {
+    alert("Please select an image first.");
     return;
   }
 
   const formData = new FormData();
-  formData.append("photo", file);   // must match server.js
+  formData.append("photo", file);
 
-  await fetch("http://localhost:3000/upload",{
-    method:"POST",
-    body:formData
-  });
+  try {
 
-  loadPhotos();
+    await fetch("/upload", {
+      method: "POST",
+      body: formData
+    });
+
+    input.value = "";
+    loadPhotos();
+
+  } catch (error) {
+    console.error("Upload failed:", error);
+  }
+
 }
 
 
-// Load Images from uploads folder
-async function loadPhotos(){
+// Load Images
+async function loadPhotos() {
 
-  const res = await fetch("http://localhost:3000/photos");
-  const data = await res.json();
+  try {
 
-  const gallery = document.getElementById("gallery");
-  gallery.innerHTML="";
+    const res = await fetch("/photos");
+    const images = await res.json();
 
-  data.forEach(name=>{
+    const gallery = document.getElementById("gallery");
+    gallery.innerHTML = "";
 
-    const card = document.createElement("div");
-    card.className = "card";
+    images.forEach(name => {
 
-    const img = document.createElement("img");
-    img.src = "http://localhost:3000/uploads/" + name;
+      const card = document.createElement("div");
+      card.className = "card";
 
-    // Delete Button
-    const delBtn = document.createElement("button");
-    delBtn.innerText = "Delete";
-    delBtn.className = "deleteBtn";
+      const img = document.createElement("img");
+      img.src = "/uploads/" + name;
 
-    delBtn.onclick = async ()=>{
-      await fetch("http://localhost:3000/delete/" + name,{
-        method:"DELETE"
-      });
-      loadPhotos();
-    };
+      const deleteBtn = document.createElement("button");
+      deleteBtn.innerText = "Delete";
+      deleteBtn.className = "deleteBtn";
 
-    // Download Button
-    const downBtn = document.createElement("button");
-    downBtn.innerText = "Download";
-    downBtn.className = "downloadBtn";
+      deleteBtn.onclick = async () => {
 
-    downBtn.onclick = ()=>{
-      const a = document.createElement("a");
-      a.href = img.src;
-      a.download = name;
-      a.click();
-    };
+        await fetch("/delete/" + name, {
+          method: "DELETE"
+        });
 
-    card.appendChild(img);
-    card.appendChild(delBtn);
-    card.appendChild(downBtn);
-    gallery.appendChild(card);
-  });
+        loadPhotos();
+      };
+
+      const downloadBtn = document.createElement("button");
+      downloadBtn.innerText = "Download";
+      downloadBtn.className = "downloadBtn";
+
+      downloadBtn.onclick = () => {
+
+        const a = document.createElement("a");
+        a.href = "/uploads/" + name;
+        a.download = name;
+        a.click();
+      };
+
+      card.appendChild(img);
+      card.appendChild(deleteBtn);
+      card.appendChild(downloadBtn);
+
+      gallery.appendChild(card);
+
+    });
+
+  } catch (error) {
+    console.error("Failed to load photos:", error);
+  }
+
 }
 
 
-// Auto load images when page opens
+// Load images when page opens
 loadPhotos();
