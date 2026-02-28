@@ -2,32 +2,59 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Pic N Save</title>
-
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0f172a">
-
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Pic N Save</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+<!-- LOGIN PAGE -->
+
+<div id="loginPage" class="login-container">
+
+<h2>🔐 Enter Access Key</h2>
+
+<input 
+type="password" 
+id="accessKey" 
+placeholder="Enter access key">
+
+<button onclick="checkKey()">Enter</button>
+
+</div>
+
+
+<!-- MAIN APP -->
+
+<div id="appPage" style="display:none;">
+
 <header>📸 Pic N Save</header>
 
 <div class="upload-section">
-  <input type="file" id="fileInput">
-  <button onclick="uploadImage()">Upload</button>
+<input type="file" id="fileInput">
+<button onclick="uploadImage()">Upload</button>
 </div>
 
 <div id="gallery" class="gallery"></div>
 
+
 <footer>
-  <p>Created by <b>Sunny07</b></p>
-  <p>Instagram: <a href="https://instagram.com/sunny_x.7_" target="_blank">@sunny_x.7_</a></p>
+
+<p>Created by <b>Sunny07</b></p>
+
+<p>Public Instagram: 
+<a href="https://instagram.com/god_sunny_gaming" target="_blank">
+@god_sunny_gaming
+</a>
+</p>
+
 </footer>
+
+</div>
 
 <script src="script.js"></script>
 
 </body>
+
 </html>

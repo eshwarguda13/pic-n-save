@@ -1,92 +1,113 @@
-// Upload Image
+const ACCESS_KEY = "Eye7";
+
+/* LOGIN CHECK */
+
+function checkKey() {
+
+  const entered = document.getElementById("accessKey").value;
+
+  if (entered === ACCESS_KEY) {
+
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("appPage").style.display = "block";
+
+    loadPhotos();
+
+  } else {
+
+    alert("Wrong Access Key");
+
+  }
+
+}
+
+
+/* UPLOAD IMAGE */
+
 async function uploadImage() {
 
   const input = document.getElementById("fileInput");
   const file = input.files[0];
 
   if (!file) {
-    alert("Please select an image first.");
+
+    alert("Select a file first");
     return;
+
   }
 
   const formData = new FormData();
   formData.append("photo", file);
 
-  try {
+  await fetch("/upload", {
+    method: "POST",
+    body: formData
+  });
 
-    await fetch("/upload", {
-      method: "POST",
-      body: formData
-    });
+  input.value = "";
 
-    input.value = "";
-    loadPhotos();
-
-  } catch (error) {
-    console.error("Upload failed:", error);
-  }
+  loadPhotos();
 
 }
 
 
-// Load Images
+/* LOAD PHOTOS */
+
 async function loadPhotos() {
 
-  try {
+  const res = await fetch("/photos");
+  const data = await res.json();
 
-    const res = await fetch("/photos");
-    const images = await res.json();
+  const gallery = document.getElementById("gallery");
+  gallery.innerHTML = "";
 
-    const gallery = document.getElementById("gallery");
-    gallery.innerHTML = "";
+  data.forEach(name => {
 
-    images.forEach(name => {
+    const card = document.createElement("div");
+    card.className = "card";
 
-      const card = document.createElement("div");
-      card.className = "card";
+    const img = document.createElement("img");
+    img.src = "/uploads/" + name;
 
-      const img = document.createElement("img");
-      img.src = "/uploads/" + name;
 
-      const deleteBtn = document.createElement("button");
-      deleteBtn.innerText = "Delete";
-      deleteBtn.className = "deleteBtn";
+    /* DELETE BUTTON */
 
-      deleteBtn.onclick = async () => {
+    const delBtn = document.createElement("button");
+    delBtn.innerText = "Delete";
+    delBtn.className = "deleteBtn";
 
-        await fetch("/delete/" + name, {
-          method: "DELETE"
-        });
+    delBtn.onclick = async () => {
 
-        loadPhotos();
-      };
+      await fetch("/delete/" + name, {
+        method: "DELETE"
+      });
 
-      const downloadBtn = document.createElement("button");
-      downloadBtn.innerText = "Download";
-      downloadBtn.className = "downloadBtn";
+      loadPhotos();
 
-      downloadBtn.onclick = () => {
+    };
 
-        const a = document.createElement("a");
-        a.href = "/uploads/" + name;
-        a.download = name;
-        a.click();
-      };
 
-      card.appendChild(img);
-      card.appendChild(deleteBtn);
-      card.appendChild(downloadBtn);
+    /* DOWNLOAD BUTTON */
 
-      gallery.appendChild(card);
+    const downBtn = document.createElement("button");
+    downBtn.innerText = "Download";
+    downBtn.className = "downloadBtn";
 
-    });
+    downBtn.onclick = () => {
 
-  } catch (error) {
-    console.error("Failed to load photos:", error);
-  }
+      const a = document.createElement("a");
+      a.href = "/uploads/" + name;
+      a.download = name;
+      a.click();
+
+    };
+
+    card.appendChild(img);
+    card.appendChild(delBtn);
+    card.appendChild(downBtn);
+
+    gallery.appendChild(card);
+
+  });
 
 }
-
-
-// Load images when page opens
-loadPhotos();
