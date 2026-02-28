@@ -15,10 +15,7 @@
 
 <h2>🔐 Enter Access Key</h2>
 
-<input 
-type="password" 
-id="accessKey" 
-placeholder="Enter access key">
+<input type="password" id="accessKey" placeholder="Enter access key">
 
 <button onclick="checkKey()">Enter</button>
 
@@ -29,7 +26,7 @@ placeholder="Enter access key">
 
 <!-- MAIN APP -->
 
-<div id="appPage" style="display:none;">
+<div id="appPage">
 
 <header>📸 Pic N Save</header>
 
@@ -40,23 +37,27 @@ placeholder="Enter access key">
 
 <div id="gallery" class="gallery"></div>
 
-
 <footer>
-
 <p>Created by <b>Sunny07</b></p>
 
-<p>Public Instagram:
+<p>
+Public Instagram:
 <a href="https://instagram.com/god_sunny_gaming" target="_blank">
 @god_sunny_gaming
 </a>
 </p>
-
 </footer>
 
+</div>
+
+
+<!-- IMAGE VIEWER -->
+
+<div id="imageViewer" onclick="closeViewer()">
+<img id="viewerImg">
 </div>
 
 <script src="script.js"></script>
 
 </body>
-
 </html>

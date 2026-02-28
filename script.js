@@ -1,12 +1,10 @@
 const ACCESS_KEY = "Eye7";
 
-/* LOGIN */
-
 function checkKey(){
 
-const entered = document.getElementById("accessKey").value;
+const entered=document.getElementById("accessKey").value;
 
-if(entered === ACCESS_KEY){
+if(entered===ACCESS_KEY){
 
 document.getElementById("loginPage").style.display="none";
 document.getElementById("appPage").style.display="block";
@@ -22,18 +20,14 @@ alert("Wrong Access Key");
 }
 
 
-/* UPLOAD */
-
 async function uploadImage(){
 
 const input=document.getElementById("fileInput");
 const file=input.files[0];
 
 if(!file){
-
 alert("Select a file first");
 return;
-
 }
 
 const formData=new FormData();
@@ -51,8 +45,6 @@ loadPhotos();
 }
 
 
-/* LOAD PHOTOS */
-
 async function loadPhotos(){
 
 const res=await fetch("/photos");
@@ -69,16 +61,11 @@ card.className="card";
 const img=document.createElement("img");
 img.src="/uploads/"+name;
 
-/* IMAGE CLICK → VIEW */
-
-img.onclick=()=>{
+img.onclick=function(){
 
 openViewer("/uploads/"+name);
 
 };
-
-
-/* DELETE */
 
 const delBtn=document.createElement("button");
 delBtn.innerText="Delete";
@@ -93,9 +80,6 @@ method:"DELETE"
 loadPhotos();
 
 };
-
-
-/* DOWNLOAD */
 
 const downBtn=document.createElement("button");
 downBtn.innerText="Download";
@@ -120,8 +104,6 @@ gallery.appendChild(card);
 
 }
 
-
-/* IMAGE VIEWER */
 
 function openViewer(src){
 
