@@ -1,9 +1,12 @@
+/* GENERAL */
+
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   background: #0f172a;
   color: white;
 }
+
 
 /* LOGIN PAGE */
 
@@ -44,6 +47,7 @@ body {
   margin-top: 10px;
 }
 
+
 /* HEADER */
 
 header {
@@ -54,6 +58,7 @@ header {
   background: #1e293b;
 }
 
+
 /* UPLOAD SECTION */
 
 .upload-section {
@@ -62,6 +67,7 @@ header {
   gap: 10px;
   padding: 15px;
 }
+
 
 /* GALLERY */
 
@@ -88,7 +94,9 @@ header {
   width: 100%;
   height: 180px;
   object-fit: cover;
+  cursor: pointer;
 }
+
 
 /* BUTTONS */
 
@@ -132,6 +140,7 @@ button {
   cursor: pointer;
 }
 
+
 /* FOOTER */
 
 footer {
@@ -144,4 +153,26 @@ footer {
 footer a {
   color: #38bdf8;
   text-decoration: none;
+}
+
+
+/* IMAGE VIEWER (FULL SCREEN IMAGE) */
+
+#imageViewer{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+#viewerImg{
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
 }

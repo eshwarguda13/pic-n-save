@@ -1,113 +1,137 @@
 const ACCESS_KEY = "Eye7";
 
-/* LOGIN CHECK */
+/* LOGIN */
 
-function checkKey() {
+function checkKey(){
 
-  const entered = document.getElementById("accessKey").value;
+const entered = document.getElementById("accessKey").value;
 
-  if (entered === ACCESS_KEY) {
+if(entered === ACCESS_KEY){
 
-    document.getElementById("loginPage").style.display = "none";
-    document.getElementById("appPage").style.display = "block";
+document.getElementById("loginPage").style.display="none";
+document.getElementById("appPage").style.display="block";
 
-    loadPhotos();
+loadPhotos();
 
-  } else {
+}else{
 
-    alert("Wrong Access Key");
+alert("Wrong Access Key");
 
-  }
+}
 
 }
 
 
-/* UPLOAD IMAGE */
+/* UPLOAD */
 
-async function uploadImage() {
+async function uploadImage(){
 
-  const input = document.getElementById("fileInput");
-  const file = input.files[0];
+const input=document.getElementById("fileInput");
+const file=input.files[0];
 
-  if (!file) {
+if(!file){
 
-    alert("Select a file first");
-    return;
+alert("Select a file first");
+return;
 
-  }
+}
 
-  const formData = new FormData();
-  formData.append("photo", file);
+const formData=new FormData();
+formData.append("photo",file);
 
-  await fetch("/upload", {
-    method: "POST",
-    body: formData
-  });
+await fetch("/upload",{
+method:"POST",
+body:formData
+});
 
-  input.value = "";
+input.value="";
 
-  loadPhotos();
+loadPhotos();
 
 }
 
 
 /* LOAD PHOTOS */
 
-async function loadPhotos() {
+async function loadPhotos(){
 
-  const res = await fetch("/photos");
-  const data = await res.json();
+const res=await fetch("/photos");
+const data=await res.json();
 
-  const gallery = document.getElementById("gallery");
-  gallery.innerHTML = "";
+const gallery=document.getElementById("gallery");
+gallery.innerHTML="";
 
-  data.forEach(name => {
+data.forEach(name=>{
 
-    const card = document.createElement("div");
-    card.className = "card";
+const card=document.createElement("div");
+card.className="card";
 
-    const img = document.createElement("img");
-    img.src = "/uploads/" + name;
+const img=document.createElement("img");
+img.src="/uploads/"+name;
 
+/* IMAGE CLICK → VIEW */
 
-    /* DELETE BUTTON */
+img.onclick=()=>{
 
-    const delBtn = document.createElement("button");
-    delBtn.innerText = "Delete";
-    delBtn.className = "deleteBtn";
+openViewer("/uploads/"+name);
 
-    delBtn.onclick = async () => {
-
-      await fetch("/delete/" + name, {
-        method: "DELETE"
-      });
-
-      loadPhotos();
-
-    };
+};
 
 
-    /* DOWNLOAD BUTTON */
+/* DELETE */
 
-    const downBtn = document.createElement("button");
-    downBtn.innerText = "Download";
-    downBtn.className = "downloadBtn";
+const delBtn=document.createElement("button");
+delBtn.innerText="Delete";
+delBtn.className="deleteBtn";
 
-    downBtn.onclick = () => {
+delBtn.onclick=async()=>{
 
-      const a = document.createElement("a");
-      a.href = "/uploads/" + name;
-      a.download = name;
-      a.click();
+await fetch("/delete/"+name,{
+method:"DELETE"
+});
 
-    };
+loadPhotos();
 
-    card.appendChild(img);
-    card.appendChild(delBtn);
-    card.appendChild(downBtn);
+};
 
-    gallery.appendChild(card);
 
-  });
+/* DOWNLOAD */
+
+const downBtn=document.createElement("button");
+downBtn.innerText="Download";
+downBtn.className="downloadBtn";
+
+downBtn.onclick=()=>{
+
+const a=document.createElement("a");
+a.href="/uploads/"+name;
+a.download=name;
+a.click();
+
+};
+
+card.appendChild(img);
+card.appendChild(delBtn);
+card.appendChild(downBtn);
+
+gallery.appendChild(card);
+
+});
+
+}
+
+
+/* IMAGE VIEWER */
+
+function openViewer(src){
+
+document.getElementById("viewerImg").src=src;
+document.getElementById("imageViewer").style.display="flex";
+
+}
+
+function closeViewer(){
+
+document.getElementById("imageViewer").style.display="none";
 
 }
