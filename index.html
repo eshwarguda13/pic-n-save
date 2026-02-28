@@ -1,17 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <title>Pic'n Save</title>
+  <meta charset="UTF-8">
+  <title>Pic N Save</title>
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
+
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h2>📸 Pic'n Save</h2>
+<header>📸 Pic N Save</header>
 
-<input type="file" id="fileInput">
-<button onclick="uploadImage()">Upload</button>
+<div class="upload-section">
+  <input type="file" id="fileInput">
+  <button onclick="uploadImage()">Upload</button>
+</div>
 
 <div id="gallery" class="gallery"></div>
+
+<footer>
+  <p>Created by <b>Sunny07</b></p>
+  <p>Instagram: <a href="https://instagram.com/sunny_x.7_" target="_blank">@sunny_x.7_</a></p>
+</footer>
 
 <script src="script.js"></script>
 
